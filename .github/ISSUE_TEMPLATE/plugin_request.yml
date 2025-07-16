@@ -1,0 +1,147 @@
+name: 🔌 Plugin Request
+description: Request a new plugin for SelfCoE
+title: "[Plugin]: "
+labels: ["enhancement", "plugins"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new plugin for SelfCoE! Please fill out the form below to help us understand your plugin request.
+
+  - type: input
+    id: plugin-name
+    attributes:
+      label: Plugin Name
+      description: What would you like to call this plugin?
+      placeholder: "my-awesome-plugin"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: plugin-type
+    attributes:
+      label: Plugin Type
+      description: What type of plugin is this?
+      options:
+        - Frontend Plugin
+        - Backend Plugin
+        - Full-stack Plugin
+        - Web Library
+        - Node Library
+        - Common Library
+    validations:
+      required: true
+
+  - type: textarea
+    id: purpose
+    attributes:
+      label: Plugin Purpose
+      description: What is the main purpose of this plugin?
+      placeholder: "This plugin would provide..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: functionality
+    attributes:
+      label: Core Functionality
+      description: What key features should this plugin provide?
+      placeholder: |
+        - Feature 1
+        - Feature 2
+        - Feature 3
+    validations:
+      required: true
+
+  - type: dropdown
+    id: integration
+    attributes:
+      label: Integration Level
+      description: How should this plugin integrate with SelfCoE?
+      options:
+        - Core - Should be included by default
+        - Optional - Can be installed as needed
+        - External - Should be a separate package
+        - Custom - Specific to SelfCoE only
+    validations:
+      required: true
+
+  - type: textarea
+    id: existing-solutions
+    attributes:
+      label: Existing Solutions
+      description: Are there existing Backstage plugins or solutions that do something similar?
+      placeholder: "I've looked at these existing solutions..."
+
+  - type: input
+    id: external-service
+    attributes:
+      label: External Service
+      description: Does this plugin integrate with an external service? If so, which one?
+      placeholder: "GitHub, Jira, Slack, etc."
+
+  - type: textarea
+    id: configuration
+    attributes:
+      label: Configuration Requirements
+      description: What configuration would be needed for this plugin?
+      placeholder: |
+        - API keys
+        - Service URLs
+        - Authentication settings
+        - etc.
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this plugin to you?
+      options:
+        - Low - Nice to have
+        - Medium - Would improve workflow
+        - High - Important for adoption
+        - Critical - Required for usage
+    validations:
+      required: true
+
+  - type: textarea
+    id: user-stories
+    attributes:
+      label: User Stories
+      description: Describe how users would interact with this plugin
+      placeholder: |
+        As a developer, I want to...
+        As a team lead, I want to...
+        As an administrator, I want to...
+
+  - type: textarea
+    id: technical-requirements
+    attributes:
+      label: Technical Requirements
+      description: Any specific technical requirements or constraints?
+      placeholder: "This plugin would require..."
+
+  - type: checkboxes
+    id: development
+    attributes:
+      label: Development
+      description: Are you interested in helping develop this plugin?
+      options:
+        - label: I would be interested in contributing to this plugin
+        - label: I have development experience with similar integrations
+        - label: I can help with testing and feedback
+        - label: I can provide documentation and examples
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      options:
+        - label: I have searched existing issues to make sure this plugin isn't already requested
+          required: true
+        - label: I have checked the Backstage plugin ecosystem for existing solutions
+          required: true
+        - label: I have provided clear use cases and requirements
+          required: true

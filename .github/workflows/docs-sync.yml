@@ -1,0 +1,254 @@
+name: 📚 Documentation Sync
+
+on:
+  push:
+    branches: ['main', 'develop']
+    paths:
+      - 'docs/**'
+      - 'README.md'
+      - 'CHANGELOG.md'
+      - '.github/workflows/docs-sync.yml'
+  pull_request:
+    branches: ['main', 'develop']
+    paths:
+      - 'docs/**'
+      - 'README.md'
+      - 'CHANGELOG.md'
+
+jobs:
+  docs-check:
+    name: 📋 Documentation Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🔍 Check documentation structure
+        run: |
+          echo "Checking documentation structure..."
+          
+          # Check required files exist
+          required_files=(
+            "README.md"
+            "docs/index.md"
+            "docs/CHANGELOG.md"
+            ".github/CONTRIBUTING.md"
+            ".github/SECURITY.md"
+          )
+          
+          for file in "${required_files[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "❌ Required file missing: $file"
+              exit 1
+            else
+              echo "✅ Found: $file"
+            fi
+          done
+
+      - name: 🔗 Check for broken links
+        run: |
+          echo "Checking for broken internal links..."
+          
+          # Check README links
+          if grep -q "https://larralapid.github.io/SelfCoE/" README.md; then
+            echo "✅ GitHub Pages links found in README"
+          else
+            echo "⚠️  No GitHub Pages links found in README"
+          fi
+          
+          # Check for relative links that might be broken
+          find docs -name "*.md" -exec grep -l "\](\.\./" {} \; | while read file; do
+            echo "⚠️  Found relative link in: $file"
+          done
+
+      - name: 📊 Generate documentation report
+        run: |
+          echo "## Documentation Report" > doc-report.md
+          echo "Generated on: $(date)" >> doc-report.md
+          echo "" >> doc-report.md
+          
+          echo "### File Structure" >> doc-report.md
+          echo '```' >> doc-report.md
+          tree docs/ 2>/dev/null || find docs -type f | sort >> doc-report.md
+          echo '```' >> doc-report.md
+          echo "" >> doc-report.md
+          
+          echo "### Word Count" >> doc-report.md
+          echo '```' >> doc-report.md
+          wc -w docs/*.md README.md 2>/dev/null || echo "Word count unavailable" >> doc-report.md
+          echo '```' >> doc-report.md
+
+      - name: 📤 Upload documentation report
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation-report
+          path: doc-report.md
+
+  docs-lint:
+    name: 🧹 Documentation Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 📦 Install markdownlint
+        run: npm install -g markdownlint-cli
+
+      - name: 🧹 Lint markdown files
+        run: |
+          echo "Linting markdown files..."
+          markdownlint docs/*.md README.md .github/*.md || true
+
+      - name: 📝 Check spelling
+        run: |
+          echo "Checking for common spelling errors..."
+          
+          # Common typos to check for
+          typos=(
+            "teh->the"
+            "adn->and"
+            "hte->the"
+            "taht->that"
+            "ot->to"
+            "fo->of"
+            "seperate->separate"
+            "recieve->receive"
+            "occurence->occurrence"
+            "definately->definitely"
+          )
+          
+          for typo in "${typos[@]}"; do
+            wrong=${typo%->*}
+            correct=${typo#*->}
+            
+            if grep -r -i "$wrong" docs/ README.md .github/*.md 2>/dev/null; then
+              echo "⚠️  Possible typo '$wrong' found (should be '$correct')"
+            fi
+          done
+
+  docs-deploy:
+    name: 🚀 Deploy Documentation
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [docs-check, docs-lint]
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 📦 Install dependencies
+        run: |
+          if [ -f package.json ]; then
+            npm ci
+          fi
+
+      - name: 🏗️ Build documentation
+        run: |
+          echo "Building documentation..."
+          
+          # Ensure docs directory exists
+          mkdir -p docs
+          
+          # Copy any additional files needed for GitHub Pages
+          if [ -f README.md ]; then
+            # Create a copy of README in docs if it doesn't exist
+            if [ ! -f docs/README.md ]; then
+              cp README.md docs/README.md
+            fi
+          fi
+          
+          # Generate table of contents for index.md if needed
+          if [ -f docs/index.md ]; then
+            echo "✅ Documentation index exists"
+          fi
+
+      - name: 📈 Update documentation metrics
+        run: |
+          echo "Updating documentation metrics..."
+          
+          # Count documentation files
+          doc_count=$(find docs -name "*.md" | wc -l)
+          echo "📄 Total documentation files: $doc_count"
+          
+          # Count total words
+          total_words=$(cat docs/*.md README.md 2>/dev/null | wc -w)
+          echo "📝 Total words in documentation: $total_words"
+          
+          # Update metrics in a file
+          echo "# Documentation Metrics" > docs/metrics.md
+          echo "- Files: $doc_count" >> docs/metrics.md
+          echo "- Words: $total_words" >> docs/metrics.md
+          echo "- Last updated: $(date)" >> docs/metrics.md
+
+      - name: 🌐 Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          enable_jekyll: true
+          cname: larralapid.dev
+
+  docs-pr-preview:
+    name: 📋 PR Documentation Preview
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    needs: [docs-check, docs-lint]
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🔍 Check documentation changes
+        run: |
+          echo "Checking documentation changes in PR..."
+          
+          # Get changed files
+          git fetch origin main
+          changed_files=$(git diff --name-only origin/main...HEAD)
+          
+          echo "### Documentation Changes" > pr-docs-summary.md
+          echo "The following documentation files were changed:" >> pr-docs-summary.md
+          echo "" >> pr-docs-summary.md
+          
+          for file in $changed_files; do
+            if [[ $file == *.md ]] || [[ $file == docs/* ]]; then
+              echo "- \`$file\`" >> pr-docs-summary.md
+            fi
+          done
+          
+          echo "" >> pr-docs-summary.md
+          echo "### Impact Assessment" >> pr-docs-summary.md
+          echo "- [ ] Documentation structure maintained" >> pr-docs-summary.md
+          echo "- [ ] Links are functional" >> pr-docs-summary.md
+          echo "- [ ] Content is accurate" >> pr-docs-summary.md
+          echo "- [ ] Spelling and grammar checked" >> pr-docs-summary.md
+
+      - name: 📝 Comment on PR
+        uses: actions/github-script@v7
+        if: github.event_name == 'pull_request'
+        with:
+          script: |
+            const fs = require('fs');
+            
+            try {
+              const summary = fs.readFileSync('pr-docs-summary.md', 'utf8');
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `## 📚 Documentation Review\n\n${summary}\n\n---\n*This comment was automatically generated by the documentation sync workflow.*`
+              });
+            } catch (error) {
+              console.log('No documentation changes detected');
+            }

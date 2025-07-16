@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 GitHub Discussions
+    url: https://github.com/larralapid/SelfCoE/discussions
+    about: Ask questions, share ideas, and discuss SelfCoE with the community
+  - name: 📖 Documentation
+    url: https://larralapid.github.io/SelfCoE/
+    about: Check our documentation for guides, tutorials, and API reference
+  - name: 🎯 Backstage Community
+    url: https://backstage.io/community
+    about: Get help from the broader Backstage community
+  - name: 🔗 Backstage Discord
+    url: https://discord.gg/backstage
+    about: Join the official Backstage Discord server for real-time support

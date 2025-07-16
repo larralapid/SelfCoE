@@ -1,0 +1,126 @@
+name: 🚀 Feature Request
+description: Suggest a new feature for SelfCoE
+title: "[Feature]: "
+labels: ["enhancement", "feature-request"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature for SelfCoE! Please fill out the form below to help us understand your request.
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Feature Category
+      description: What category does this feature fall under?
+      options:
+        - Service Catalog
+        - Software Templates
+        - Authentication & Authorization
+        - User Interface
+        - API & Backend
+        - Documentation
+        - Developer Experience
+        - Integrations
+        - Performance
+        - Security
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve? What pain point are you experiencing?
+      placeholder: "As a [user type], I want to [goal] so that [benefit]..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like to see implemented
+      placeholder: "I would like to see..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered any alternative solutions or workarounds?
+      placeholder: "I've considered..."
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature to you?
+      options:
+        - Low - Nice to have
+        - Medium - Would improve workflow
+        - High - Critical for adoption
+        - Critical - Blocking current usage
+    validations:
+      required: true
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Estimated Complexity
+      description: How complex do you think this feature would be to implement?
+      options:
+        - Low - Simple change/addition
+        - Medium - Moderate development effort
+        - High - Significant development effort
+        - Unknown - Not sure about complexity
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: What would need to be true for this feature to be considered complete?
+      placeholder: |
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+        - [ ] Criterion 3
+
+  - type: textarea
+    id: mockups
+    attributes:
+      label: Mockups/Examples
+      description: If applicable, add mockups, screenshots, or examples of similar features
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: Are there any dependencies or prerequisites for this feature?
+      placeholder: "This feature depends on..."
+
+  - type: checkboxes
+    id: backstage
+    attributes:
+      label: Backstage Integration
+      description: How should this integrate with Backstage?
+      options:
+        - label: This should be a custom SelfCoE plugin
+        - label: This should integrate with existing Backstage plugins
+        - label: This should use standard Backstage APIs
+        - label: This is independent of Backstage core features
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      options:
+        - label: I have searched existing issues to make sure this is not a duplicate
+          required: true
+        - label: I have provided a clear problem statement and solution
+          required: true
+        - label: I have checked if this feature already exists in Backstage core
+          required: true
