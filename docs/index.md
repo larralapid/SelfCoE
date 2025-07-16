@@ -54,9 +54,9 @@ Access the application at `http://localhost:3000`
 ## Documentation
 
 - [Changelog](CHANGELOG.md) - Track project changes and releases
-- [Contributing Guide](CONTRIBUTING.md) - How to contribute to the project
-- [API Documentation](api/) - Technical API reference
-- [User Guide](user-guide/) - End-user documentation
+- [Contributing Guide](../.github/CONTRIBUTING.md) - How to contribute to the project
+- [API Documentation](api/index.md) - Technical API reference
+- [User Guide](user-guide/index.md) - End-user documentation
 
 ## Getting Help
 
@@ -66,11 +66,11 @@ Access the application at `http://localhost:3000`
 
 ## Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+We welcome contributions! Please see our [Contributing Guide](../.github/CONTRIBUTING.md) for details.
 
 ## License
 
-This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache License 2.0. See the [LICENSE](../LICENSE) file for details.
 
 ---
 
