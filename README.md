@@ -5,7 +5,7 @@ A comprehensive Self-Service Center of Excellence built on [Backstage](https://b
 [![GitHub Pages](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://larralapid.github.io/SelfCoE/)
 [![GitHub Issues](https://img.shields.io/github/issues/larralapid/SelfCoE)](https://github.com/larralapid/SelfCoE/issues)
 [![GitHub Stars](https://img.shields.io/github/stars/larralapid/SelfCoE)](https://github.com/larralapid/SelfCoE/stargazers)
-[![License](https://img.shields.io/badge/license-Custom-red)](LICENSE)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
 
 ## ✨ Features
 
@@ -48,8 +48,8 @@ Visit our [documentation site](https://larralapid.github.io/SelfCoE/) for:
 
 - [Getting Started Guide](https://larralapid.github.io/SelfCoE/)
 - [Changelog](https://larralapid.github.io/SelfCoE/CHANGELOG.html)
-- [Contributing Guidelines](CONTRIBUTING.md)
-- [API Reference](docs/api/)
+- [Contributing Guidelines](.github/CONTRIBUTING.md)
+- [API Reference](docs/api/index.md)
 
 ## 🛠️ Development
 
@@ -87,7 +87,7 @@ SelfCoE/
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on:
+We welcome contributions! Please see our [Contributing Guidelines](.github/CONTRIBUTING.md) for details on:
 
 - Code of Conduct
 - Development process
@@ -150,9 +150,9 @@ kubectl apply -f k8s/
 
 ## 📝 License
 
-This project is licensed under a custom license. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
 
-**Note**: Commercial use is restricted. Only the original creator may monetize this work.
+**Note**: This project is open source under the Apache License 2.0.
 
 ## 🙏 Acknowledgments
 
